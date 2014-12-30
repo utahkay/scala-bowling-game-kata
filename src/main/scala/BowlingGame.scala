@@ -1,45 +1,42 @@
-/**
- * Created by kjohansen on 12/30/2014.
- */
 class BowlingGame {
-  var pins = List[Int]()
+  var rolls = List[Int]()
 
-  def roll(pin: Int) = {
-    pins = pins ::: List(pin)
+  def roll(pins: Int) = {
+    rolls = rolls ::: List(pins)
   }
 
   def score: Int = {
     scoreAssist(0, 0, 0)
   }
 
-  private def scoreAssist(frameIndex: Int, pinIndex: Int, score: Int): Int = {
-    if (frameIndex == 10)
+  private def scoreAssist(frame: Int, roll: Int, score: Int): Int = {
+    if (frame == 10)
       score
-    else if (isStrike(pinIndex))
-      scoreAssist(frameIndex + 1, pinIndex + 1, score + 10 + strikeBonus(pinIndex))
-    else if (isSpare(pinIndex))
-      scoreAssist(frameIndex + 1, pinIndex + 2, score + 10 + spareBonus(pinIndex))
+    else if (isStrike(roll))
+      scoreAssist(frame + 1, roll + 1, score + 10 + strikeBonus(roll))
+    else if (isSpare(roll))
+      scoreAssist(frame + 1, roll + 2, score + 10 + spareBonus(roll))
     else
-      scoreAssist(frameIndex + 1, pinIndex + 2, score + normalFrameScore(pinIndex))
+      scoreAssist(frame + 1, roll + 2, score + normalFrameScore(roll))
   }
 
-  def isStrike(pinIndex: Int): Boolean = {
-    pins(pinIndex) == 10
+  private def isStrike(roll: Int): Boolean = {
+    rolls(roll) == 10
   }
 
-  def strikeBonus(pinIndex: Int): Int = {
-    pins(pinIndex + 1) + pins(pinIndex + 2)
+  private def strikeBonus(roll: Int): Int = {
+    rolls(roll + 1) + rolls(roll + 2)
   }
 
-  def spareBonus(pinIndex: Int): Int = {
-    pins(pinIndex + 2)
+  private def spareBonus(roll: Int): Int = {
+    rolls(roll + 2)
   }
 
-  def isSpare(pinIndex: Int): Boolean = {
-    normalFrameScore(pinIndex) == 10
+  private def isSpare(roll: Int): Boolean = {
+    rolls(roll) + rolls(roll + 1) == 10
   }
 
-  def normalFrameScore(pinIndex: Int): Int = {
-    pins(pinIndex) + pins(pinIndex + 1)
+  private def normalFrameScore(roll: Int): Int = {
+    rolls(roll) + rolls(roll + 1)
   }
 }
